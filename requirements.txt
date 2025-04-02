@@ -1,0 +1,10 @@
+streamlit
+chromadb
+sentence-transformers
+selenium
+bs4
+requests
+fitz
+google-generativeai
+python-dotenv
+frontend
