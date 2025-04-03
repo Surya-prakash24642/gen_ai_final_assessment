@@ -154,18 +154,22 @@ def main():
 
     # Show Website input if chosen
 # Add inside `main()` function where website input is handled
+# Show Website input if chosen
     if st.session_state["use_website"]:
         website_url = st.text_input("Enter a website URL:")
 
-        if website_url:
-            if st.button("Process URL"):
-                st.session_state["scraped_content"] = extract_text_from_website(website_url)
-                
-                if "Error fetching website data" in st.session_state["scraped_content"]:
-                    st.error("Failed to fetch website data. Check the URL and try again.")
-                else:
-                    store_vectors_in_chromadb([st.session_state["scraped_content"]], website_url)  # Store embeddings
-                    st.success("✅ Web scraping completed! Data is now stored for answering questions.")
+        # Show "Process URL" button immediately
+        process_clicked = st.button("Process URL")
+
+        if process_clicked and website_url:
+            st.session_state["scraped_content"] = extract_text_from_website(website_url)
+            
+            if "Error fetching website data" in st.session_state["scraped_content"]:
+                st.error("Failed to fetch website data. Check the URL and try again.")
+            else:
+                store_vectors_in_chromadb([st.session_state["scraped_content"]], website_url)  # Store embeddings
+                st.success("✅ Web scraping completed! Data is now stored for answering questions.")
+
 
     # Ensure scraped content is used for Q&A
     if "scraped_content" not in st.session_state:
